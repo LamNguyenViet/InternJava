@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,10 +18,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.tamdongtam.java.exception.BankTransactionException;
 import com.tamdongtam.java.model.BankAccountInfo;
+import com.tamdongtam.java.model.SendMoney;
 import com.tamdongtam.java.service.IAccountService;
 
 @Controller
+@Transactional
 public class BankAccountController {
 	@Autowired
 	private IAccountService accountService;
@@ -49,5 +53,15 @@ public class BankAccountController {
 	public ResponseEntity<Void> deleteAccount(@PathVariable("id") int id) {
 		accountService.deleteAccount(id);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+	@RequestMapping(value = "account/send", method = RequestMethod.POST , produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+	public ResponseEntity<SendMoney> sendMoney(@RequestBody SendMoney sendMoney){
+		try {
+			accountService.sendMoney(sendMoney);
+		} catch (BankTransactionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return new ResponseEntity<SendMoney>(HttpStatus.OK);
 	}
 }
