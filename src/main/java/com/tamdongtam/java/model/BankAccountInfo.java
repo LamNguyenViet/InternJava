@@ -4,6 +4,10 @@ public class BankAccountInfo {
 	private long id;
 	private String fullName;
 	private double balance;
+	
+	public BankAccountInfo() {
+		super();
+	}
 	public BankAccountInfo(long id, String fullName, double balance) {
 		super();
 		this.id = id;

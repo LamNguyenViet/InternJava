@@ -42,7 +42,7 @@ public class BankAccountDAO implements IBankAccountDAO{
 
 	@Override
 	public void addAccount(BankAccountInfo accountInfo) {
-		String sql = "insert into bank_account(id, full_name,balance) values (?,?,?)";
+		String sql = "insert into bank_account(id, full_name, balance) values (?,?,?)";
 		jdbcTemplate.update(sql,accountInfo.getId(),accountInfo.getFullName(),accountInfo.getBalance());
 	}
 
